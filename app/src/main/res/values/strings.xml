@@ -9,4 +9,7 @@
     <string name="you_have_5_tries_left">You have 5 tries left</string>
     <string name="next_guess">Next guess :</string>
     <string name="ok">Ok</string>
+    <string name="lost_dialog_title">You have lost this game. \r The word was \"  \"</string>
+    <string name="new_game">"new Game "</string>
+    <string name="won_game_title">Congratulation you guessed the word : %1$s</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.remid.hangmangame.hangman_game.presentation.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,7 @@ class HangmanFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "viewModel hashCode :"+ viewModel.hashCode().toString())
 
         viewModel.viewState.observe(viewLifecycleOwner) {
             hangmanGameviewState ->
@@ -69,6 +71,18 @@ class HangmanFragment : BaseFragment() {
                     binding.tvLeftNumber.text = hangmanGameviewState.content.leftTriesNumber.toString()
 
                 }
+
+                is HangmanGameViewState.GameWon -> {
+                    Log.d(TAG, " game won ")
+                    GameWonDialogFragment().show(childFragmentManager, GameWonDialogFragment.TAG)
+                }
+
+                is HangmanGameViewState.GamLost -> {
+                    Log.d(TAG, " game Lost ")
+
+                    GameLostDialogFragment().show(childFragmentManager, GameLostDialogFragment.TAG)
+                }
+
             }
         }
 

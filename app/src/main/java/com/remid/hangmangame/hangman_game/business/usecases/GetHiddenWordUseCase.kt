@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GetWordHiddenWordUseCase @Inject constructor() {
+class GetHiddenWordUseCase @Inject constructor() {
 
     suspend fun execute(wordToGuess: String?, gessedLetters: List<String>): String {
         return withContext(Dispatchers.IO) {
