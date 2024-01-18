@@ -1,4 +1,4 @@
-package com.remid.hangmangame.shared.viewmodel
+package com.remid.hangmangame.shared.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

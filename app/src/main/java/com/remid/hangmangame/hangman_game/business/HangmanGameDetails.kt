@@ -1,6 +1,6 @@
-package com.remid.hangmangame.hangman_game.presentation
+package com.remid.hangmangame.hangman_game.business
 
-data class HangmanGameContent(
+data class HangmanGameDetails(
     val victories: Int,
     val gameNumber: Int,
     val leftTriesNumber: Int,

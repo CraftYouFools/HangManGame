@@ -70,11 +70,14 @@ dependencies {
     testImplementation ("androidx.arch.core:core-testing:2.2.0")
 
     //dagger2
-    val dagger_version by extra { "2.40" }
     implementation ("com.google.dagger:dagger:2.48.1")
     kapt ("com.google.dagger:dagger-compiler:2.48.1")
 
     compileOnly ("javax.annotation:jsr250-api:1.0")
     implementation ("javax.inject:javax.inject:1")
+
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
+
 
 }
