@@ -1,5 +1,7 @@
-package com.remid.hangmangame.hangman_game.business
+package com.remid.hangmangame.hangman_game.business.usecases
 
+import com.remid.hangmangame.hangman_game.business.HangmanGameRepository
+import com.remid.hangmangame.hangman_game.business.entity.HangmanGameDetails
 import com.remid.hangmangame.shared.business.HangAppResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -12,6 +14,7 @@ class GetCurrentGameUseCase @Inject constructor(private val hangmanGameRepositor
         val gameNumber = hangmanGameRepository.getGameNumber()
         val triesLeft = hangmanGameRepository.getTriesLeft()
         val currentWord = hangmanGameRepository.getCurrentWordToGuess()
+        val currentLetters = hangmanGameRepository.getCurrentGuessedLetters()
 
         if (victoriesNumber is HangAppResult.OnFailure) {
             return HangAppResult.OnFailure(victoriesNumber.exception)
@@ -24,24 +27,31 @@ class GetCurrentGameUseCase @Inject constructor(private val hangmanGameRepositor
         }
         if (currentWord is HangAppResult.OnFailure) {
             return HangAppResult.OnFailure(currentWord.exception)
-        } else {
+        }
+        if (currentLetters is HangAppResult.OnFailure) {
+            return HangAppResult.OnFailure(currentLetters.exception)
+        }
+        else {
             victoriesNumber as HangAppResult.OnSuccess
             gameNumber as HangAppResult.OnSuccess
             triesLeft as HangAppResult.OnSuccess
             currentWord as HangAppResult.OnSuccess
+            currentLetters as HangAppResult.OnSuccess
 
             return HangAppResult.OnSuccess(
                 combine(
                     victoriesNumber.data,
                     gameNumber.data,
                     triesLeft.data,
-                    currentWord.data
-                ) { victoriesNumberData, gameNumberData, triesLeftData, currentWordData ->
+                    currentWord.data,
+                    currentLetters.data
+                ) { victoriesNumberData, gameNumberData, triesLeftData, currentWordData, currentLettersData ->
                     HangmanGameDetails(
                         victoriesNumberData,
                         gameNumberData,
                         triesLeftData,
-                        currentWordData
+                        currentWordData,
+                        currentLettersData
                     )
                 })
         }

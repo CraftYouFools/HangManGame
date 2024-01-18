@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import com.remid.hangmangame.shared.business.HangAppResult
 import javax.inject.Inject
 
-class HangmanHangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier private val context: Context) : HangmanGameRepository {
+class HangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier private val context: Context) : HangmanGameRepository {
 
     private val Context.dataStore by preferencesDataStore(
         name = USER_PREFERENCES_NAME
@@ -40,6 +40,29 @@ class HangmanHangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier 
         }
     }
 
+    override suspend fun getCurrentGuessedLetters(): HangAppResult<Flow<List<String>>> {
+        return HangAppResult.OnSuccess(context.dataStore.data.map {
+                preference -> preference[CHAR_LIST_KEY]?.toList()?: listOf()
+        })
+    }
+
+    override suspend fun addCurrentGuessedLetter(char: String) {
+        context.dataStore.edit { preference ->
+            Log.d(TAG, "Adding letter : $char in datastore")
+            val set = preference[CHAR_LIST_KEY]?.toMutableSet() ?: mutableSetOf()
+            Log.d(TAG, "setContent : $set")
+            set.add(char)
+            Log.d(TAG, "Updating letters in datastore : $set")
+            preference[CHAR_LIST_KEY] = set
+        }
+    }
+
+    override suspend fun clearCurrentGuessedLetters() {
+        context.dataStore.edit { preference ->
+            preference.remove(CHAR_LIST_KEY)
+        }
+    }
+
     override suspend fun getVictoriesNumber(): HangAppResult<Flow<Int>> {
         return HangAppResult.OnSuccess(context.dataStore.data.map { preference -> preference[VICTORIES_KEY] ?: 0 })
     }
@@ -57,7 +80,8 @@ class HangmanHangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier 
     override suspend fun setNbGames(number: Int) {
         context.dataStore.edit { preference ->
             preference[GAME_NUMBER_KEY] = number
-        }        }
+        }
+    }
 
     override suspend fun getAllAvailableWords():  HangAppResult<Flow<List<String>>> {
         return HangAppResult.OnSuccess(context.dataStore.data.map {
@@ -67,11 +91,14 @@ class HangmanHangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier 
 
     override suspend fun setupAllAvailableWords(words: List<String>) {
         context.dataStore.edit { preference ->
-            if (preference[WORD_LIST_KEY]?.isEmpty() == true) {
+            if (preference[WORD_LIST_KEY].isNullOrEmpty()) {
                 Log.d(TAG, "Setting up word list in datastore ")
                 val set = mutableSetOf<String>()
                 set.addAll(words)
                 preference[WORD_LIST_KEY] = set
+            }
+            else {
+                Log.d(TAG, "No need to setup word list in datastore ")
             }
         }
     }
@@ -84,9 +111,10 @@ class HangmanHangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier 
         val VICTORIES_KEY = intPreferencesKey("VICTORIES_KEY")
         val GAME_NUMBER_KEY = intPreferencesKey("GAME_NUMBER_KEY")
         val WORD_LIST_KEY = stringSetPreferencesKey("WORD_LIST_KEY")
+        val CHAR_LIST_KEY = stringSetPreferencesKey("CHAR_LIST_KEY")
 
         private const val USER_PREFERENCES_NAME = "com.remid.hangmangame.game"
 
-        private const val TAG = "HangmanHangmanGameRepos"
+        private const val TAG = "HangmanGameRepos"
     }
 }

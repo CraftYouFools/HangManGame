@@ -12,6 +12,9 @@ interface HangmanGameRepository {
 
     suspend fun setCurrentWordToGuess(word: String)
 
+    suspend fun getCurrentGuessedLetters(): HangAppResult<Flow<List<String>>>
+
+    suspend fun addCurrentGuessedLetter(char: String)
 
     suspend fun getVictoriesNumber(): HangAppResult<Flow<Int>>
 
@@ -25,4 +28,5 @@ interface HangmanGameRepository {
 
 
     suspend fun setupAllAvailableWords(words: List<String>)
+    suspend fun clearCurrentGuessedLetters()
 }

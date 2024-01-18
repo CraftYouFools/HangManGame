@@ -2,10 +2,6 @@ package com.remid.hangmangame.di.application
 
 import android.app.Application
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import com.remid.hangmangame.hangman_game.business.HangmanGameRepository
-import com.remid.hangmangame.hangman_game.data.HangmanHangmanGameRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
