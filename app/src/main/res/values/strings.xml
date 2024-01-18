@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">HangmanGame</string>
+    <string name="error_when_loading_the_game">Error when loading the game</string>
+    <string name="hangman_game">Hangman Game</string>
+    <string name="nb_victories">NB victories :</string>
+    <string name="nb_games">Nb games :</string>
+    <string name="reset">Reset</string>
+    <string name="try_to_guess_the_word">Try to guess the Word !</string>
+    <string name="you_have_5_tries_left">You have 5 tries left</string>
+    <string name="next_guess">Next guess :</string>
+    <string name="ok">Ok</string>
 </resources>

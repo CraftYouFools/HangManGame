@@ -1,6 +1,7 @@
 package com.remid.hangmangame.di.presentation
 
 
+import com.remid.hangmangame.hangman_game.presentation.fragment.HangmanFragment
 import com.remid.hangmangame.shared.presentation.activity.MainActivity
 import dagger.Subcomponent
 
@@ -9,4 +10,6 @@ import dagger.Subcomponent
 interface PresentationComponent {
 
     fun inject(activity : MainActivity)
+
+    fun inject(fragment : HangmanFragment)
 }
