@@ -20,13 +20,24 @@ class HangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier private
         name = USER_PREFERENCES_NAME
     )
 
-    override suspend fun getTriesLeft(): HangAppResult<Flow<Int>> {
+    override suspend fun getTries(): HangAppResult<Flow<Int>> {
         return HangAppResult.OnSuccess(context.dataStore.data.map { preference -> preference[TRIES_KEY] ?: 0 })
     }
 
-    override suspend fun setTriesLeft(tries: Int) {
+    override suspend fun updateTries(increment: Boolean) {
         context.dataStore.edit { preference ->
-            preference[TRIES_KEY] = tries
+            val currentValue = preference[TRIES_KEY] ?: 0
+            val value = when (increment) {
+                true -> { currentValue + 1 }
+                else -> { if (currentValue > 0) { currentValue - 1 } else { 0 } }
+            }
+            preference[TRIES_KEY] = value
+        }
+    }
+
+    override suspend fun clearTries() {
+        context.dataStore.edit { preference ->
+            preference.remove(TRIES_KEY)
         }
     }
 
@@ -35,10 +46,19 @@ class HangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier private
     }
 
     override suspend fun setCurrentWordToGuess(word: String) {
+        Log.d(TAG, "setCurrentWordToGuess : $word")
         context.dataStore.edit { preference ->
             preference[CURRENT_WORD_KEY] = word
         }
     }
+
+    override suspend fun clearCurrentWordToGuess() {
+        context.dataStore.edit { preference ->
+            Log.d(TAG, "clearCurrentWordToGuess()" )
+            preference.remove(CURRENT_WORD_KEY)
+        }
+    }
+
 
     override suspend fun getCurrentGuessedLetters(): HangAppResult<Flow<List<String>>> {
         return HangAppResult.OnSuccess(context.dataStore.data.map {
@@ -67,9 +87,15 @@ class HangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier private
         return HangAppResult.OnSuccess(context.dataStore.data.map { preference -> preference[VICTORIES_KEY] ?: 0 })
     }
 
-    override suspend fun setNbVictories(number: Int) {
+    override suspend fun updateNbVictories() {
         context.dataStore.edit { preference ->
-            preference[VICTORIES_KEY] = number
+            if (preference[VICTORIES_KEY] == null) {
+                preference[VICTORIES_KEY] = 1
+            } else {
+                preference[VICTORIES_KEY]?.let { value ->
+                    preference[VICTORIES_KEY] = value + 1
+                }
+            }
         }
     }
 
@@ -77,9 +103,27 @@ class HangmanGameRepositoryImpl @Inject constructor(@AppContextQualifier private
         return HangAppResult.OnSuccess(context.dataStore.data.map { preference -> preference[GAME_NUMBER_KEY] ?: 0 })
     }
 
-    override suspend fun setNbGames(number: Int) {
+    override suspend fun updateGameNumber() {
         context.dataStore.edit { preference ->
-            preference[GAME_NUMBER_KEY] = number
+            if (preference[GAME_NUMBER_KEY] == null) {
+                preference[GAME_NUMBER_KEY] = 1
+            } else {
+                preference[GAME_NUMBER_KEY]?.let { value ->
+                    preference[GAME_NUMBER_KEY] = value + 1
+                }
+            }
+        }
+    }
+
+    override suspend fun clearGameNumber() {
+        context.dataStore.edit { preference ->
+            preference.remove(GAME_NUMBER_KEY)
+        }
+    }
+
+    override suspend fun clearVictories() {
+        context.dataStore.edit { preference ->
+            preference.remove(VICTORIES_KEY)
         }
     }
 

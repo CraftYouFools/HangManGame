@@ -8,6 +8,6 @@ sealed class HangmanGameViewState {
 
     data class GameWon (val content: HangmanGameContent) : HangmanGameViewState()
 
-    data class GamLost(val content: HangmanGameContent) : HangmanGameViewState()
+    data class GameLost(val content: HangmanGameContent) : HangmanGameViewState()
 
 }

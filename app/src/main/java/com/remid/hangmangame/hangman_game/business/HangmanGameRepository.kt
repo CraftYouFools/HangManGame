@@ -5,8 +5,8 @@ import com.remid.hangmangame.shared.business.HangAppResult
 
 interface HangmanGameRepository {
 
-    suspend fun getTriesLeft():  HangAppResult<Flow<Int>>
-    suspend fun setTriesLeft(tries: Int)
+    suspend fun getTries():  HangAppResult<Flow<Int>>
+    suspend fun updateTries(increment: Boolean)
 
     suspend fun getCurrentWordToGuess():  HangAppResult<Flow<String?>>
 
@@ -18,15 +18,18 @@ interface HangmanGameRepository {
 
     suspend fun getVictoriesNumber(): HangAppResult<Flow<Int>>
 
-    suspend fun setNbVictories(number: Int)
+    suspend fun updateNbVictories()
 
     suspend fun getGameNumber():  HangAppResult<Flow<Int>>
 
-    suspend fun setNbGames(number: Int)
+    suspend fun updateGameNumber()
 
     suspend fun getAllAvailableWords():  HangAppResult<Flow<List<String>>>
 
-
     suspend fun setupAllAvailableWords(words: List<String>)
     suspend fun clearCurrentGuessedLetters()
+    suspend fun clearCurrentWordToGuess()
+    suspend fun clearTries()
+    suspend fun clearGameNumber()
+    suspend fun clearVictories()
 }
