@@ -1,8 +1,7 @@
 package com.remid.hangmangame.di.presentation
 
 
-import com.remid.hangmangame.hangman_game.presentation.fragment.dialog.GameLostDialogFragment
-import com.remid.hangmangame.hangman_game.presentation.fragment.dialog.GameWonDialogFragment
+import com.remid.hangmangame.hangman_game.presentation.fragment.dialog.GameFinishedDialogFragment
 import com.remid.hangmangame.hangman_game.presentation.fragment.HangmanFragment
 import com.remid.hangmangame.shared.presentation.activity.MainActivity
 import dagger.Subcomponent
@@ -14,6 +13,5 @@ interface PresentationComponent {
     fun inject(activity : MainActivity)
 
     fun inject(fragment : HangmanFragment)
-    fun inject(gameWonDialogFragment: GameWonDialogFragment)
-    fun inject(gameLostDialogFragment: GameLostDialogFragment)
+    fun inject(gameFinishedDialogFragment: GameFinishedDialogFragment)
 }

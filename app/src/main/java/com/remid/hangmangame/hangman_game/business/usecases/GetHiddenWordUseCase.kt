@@ -6,19 +6,18 @@ import javax.inject.Inject
 
 class GetHiddenWordUseCase @Inject constructor() {
 
-    suspend fun execute(wordToGuess: String?, gessedLetters: List<String>): String {
+    suspend fun execute(wordToGuess: String?, guessedLetters: List<String>): String {
         return withContext(Dispatchers.IO) {
             if (wordToGuess == null)
                 return@withContext ""
             var stringResult = ""
 
             wordToGuess.lowercase().forEach { char ->
-                if (gessedLetters.contains(char.toString().lowercase())) {
+                if (guessedLetters.contains(char.toString().lowercase())) {
                     stringResult += char
                 } else {
                     stringResult += "_"
                 }
-                stringResult += " "
             }
             return@withContext stringResult
         }

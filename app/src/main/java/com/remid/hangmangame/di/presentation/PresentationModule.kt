@@ -3,17 +3,14 @@ package com.remid.hangmangame.di.presentation
 import com.remid.hangmangame.di.application.MainDispatcher
 import com.remid.hangmangame.hangman_game.business.usecases.GetCurrentGameUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.GetHiddenWordUseCase
-import com.remid.hangmangame.hangman_game.business.HangmanGameRepository
-import com.remid.hangmangame.hangman_game.business.usecases.ClearCurrentWordUseCase
+import com.remid.hangmangame.hangman_game.business.usecases.ClearCurrentGameUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.FinishCurrentGameUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.GetCurrentWordUseCase
+import com.remid.hangmangame.hangman_game.business.usecases.GetGameStateUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.GuessNewLetterUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.InitWordListUseCase
-import com.remid.hangmangame.hangman_game.business.usecases.IsGameLostUseCase
-import com.remid.hangmangame.hangman_game.business.usecases.IsGameWonUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.ResetGameHistoryUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.StartNewGameUseCase
-import com.remid.hangmangame.hangman_game.data.HangmanGameRepositoryImpl
 import com.remid.hangmangame.hangman_game.presentation.viewmodel.HangManGameViewModel
 import com.remid.hangmangame.hangman_game.presentation.viewmodel.HangManGameWonViewModel
 import dagger.Module
@@ -33,7 +30,7 @@ class PresentationModule {
         getHiddenWordUseCase: GetHiddenWordUseCase,
         guessNewLetterUseCase: GuessNewLetterUseCase,
         finishCurrentGameUseCase: FinishCurrentGameUseCase,
-        clearCurrentWordUseCase: ClearCurrentWordUseCase,
+        clearCurrentGameUseCase: ClearCurrentGameUseCase,
         resetGameHistoryUseCase: ResetGameHistoryUseCase,
         @MainDispatcher dispatcher: CoroutineDispatcher
     ): HangManGameViewModel {
@@ -44,7 +41,7 @@ class PresentationModule {
             getHiddenWordUseCase,
             guessNewLetterUseCase,
             finishCurrentGameUseCase,
-            clearCurrentWordUseCase,
+            clearCurrentGameUseCase,
             resetGameHistoryUseCase,
             dispatcher
         )
@@ -53,11 +50,11 @@ class PresentationModule {
     @Provides
     @PresentationScope
     fun provideHangManGameWonViewModel(
-        getCurrentWordUseCase: GetCurrentWordUseCase,
+        getGameStateUseCase: GetGameStateUseCase,
         @MainDispatcher dispatcher: CoroutineDispatcher
     ): HangManGameWonViewModel {
         return HangManGameWonViewModel(
-            getCurrentWordUseCase,
+            getGameStateUseCase,
             dispatcher
         )
     }

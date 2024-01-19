@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.remid.hangmangame.hangman_game.business.usecases.ClearCurrentWordUseCase
+import com.remid.hangmangame.hangman_game.business.usecases.ClearCurrentGameUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.FinishCurrentGameUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.GetCurrentGameUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.GetHiddenWordUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.GuessNewLetterUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.InitWordListUseCase
+import com.remid.hangmangame.hangman_game.business.usecases.IsGameLostUseCase.Companion.MAX_GUESS_VALUE
 import com.remid.hangmangame.hangman_game.business.usecases.ResetGameHistoryUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.StartNewGameUseCase
 import com.remid.hangmangame.hangman_game.presentation.HangmanGameContent
@@ -27,7 +28,7 @@ class HangManGameViewModel(
     private val getHiddenWordUseCase: GetHiddenWordUseCase,
     private val guessNewLetterUseCase : GuessNewLetterUseCase,
     private val finishCurrentGameUseCase : FinishCurrentGameUseCase,
-    private val clearCurrentWordUseCase: ClearCurrentWordUseCase,
+    private val clearCurrentGameUseCase: ClearCurrentGameUseCase,
     private val resetGameHistoryUseCase : ResetGameHistoryUseCase,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -65,7 +66,7 @@ class HangManGameViewModel(
                                 val content = HangmanGameContent(
                                     victories,
                                     gameNumber,
-                                    triesNumber,
+                                    MAX_GUESS_VALUE-triesNumber,
                                     getHiddenWordUseCase.execute(guessWord, letterList)
                                 )
                                 Log.d(TAG, " content : $content")
@@ -99,7 +100,7 @@ class HangManGameViewModel(
 
     private fun reInitGame() {
         viewModelScope.launch(dispatcher) {
-            clearCurrentWordUseCase.execute()
+            clearCurrentGameUseCase.execute()
             _viewState.postValue(HangmanGameViewState.Loading)
             startNewGame()
             getCurrentGame()

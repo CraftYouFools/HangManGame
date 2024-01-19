@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.remid.hangmangame.R
 import com.remid.hangmangame.hangman_game.presentation.viewmodel.HangManGameWonViewModel
 import com.remid.hangmangame.shared.presentation.fragment.BaseDialogFragment
 import com.remid.hangmangame.shared.presentation.fragment.DialogClosedListener
 import com.remid.hangmangame.shared.presentation.viewmodel.ViewModelFactory
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class GameWonDialogFragment(private val dialogClosedListener: DialogClosedListener) : BaseDialogFragment() {
+class GameFinishedDialogFragment(private val dialogClosedListener: DialogClosedListener) : BaseDialogFragment() {
 
     @Inject
     lateinit var myViewModelFactory: ViewModelFactory
@@ -48,8 +45,15 @@ class GameWonDialogFragment(private val dialogClosedListener: DialogClosedListen
         Log.d(TAG, "onResume() called ")
         viewModel.getCurrentWord()
         viewModel.viewState.observe(this){
-            Log.d(TAG, "setMessage called ")
-            dialog.setMessage(String.format(getString(R.string.won_game_title), it.content.word))
+            when(it.content.isGameWon) {
+                true -> {
+                    dialog.setMessage(String.format(getString(R.string.won_game_title), it.content.word))
+                }
+                else -> {
+                    dialog.setMessage(String.format(getString(R.string.lost_dialog_title), it.content.word))
+                }
+            }
+
             dialog.show()
         }
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {

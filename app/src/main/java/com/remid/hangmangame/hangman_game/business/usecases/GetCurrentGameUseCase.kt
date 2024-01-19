@@ -59,7 +59,7 @@ class GetCurrentGameUseCase @Inject constructor(private val hangmanGameRepositor
                             triesLeftData,
                             currentWordData,
                             currentLettersData,
-                            isGameWonUseCase.execute( getHiddenWordUseCase.execute(currentWordData, currentLettersData),currentWordData),
+                            isGameWonUseCase.execute(),
                             isGameLostUseCase.execute(triesLeftData),
                         )
                     })

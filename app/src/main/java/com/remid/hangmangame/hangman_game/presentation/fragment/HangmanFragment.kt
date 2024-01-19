@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.remid.hangmangame.R
 import com.remid.hangmangame.databinding.FragmentHangmanGameBinding
 import com.remid.hangmangame.hangman_game.presentation.HangmanGameViewState
-import com.remid.hangmangame.hangman_game.presentation.fragment.dialog.GameLostDialogFragment
-import com.remid.hangmangame.hangman_game.presentation.fragment.dialog.GameWonDialogFragment
+import com.remid.hangmangame.hangman_game.presentation.fragment.dialog.GameFinishedDialogFragment
 import com.remid.hangmangame.hangman_game.presentation.viewmodel.HangManGameViewModel
 import com.remid.hangmangame.shared.presentation.fragment.BaseFragment
 import com.remid.hangmangame.shared.presentation.fragment.DialogClosedListener
@@ -71,25 +71,23 @@ class HangmanFragment : BaseFragment(),DialogClosedListener {
                     binding.tvVictories.text = hangmanGameviewState.content.victories.toString()
                     binding.tvNbGames.text = hangmanGameviewState.content.gameNumber.toString()
                     binding.tvWordToGuess.text = hangmanGameviewState.content.guessWord
-                    binding.tvLeftNumber.text = hangmanGameviewState.content.leftTriesNumber.toString()
-
+                    binding.tvLeftNumber.text = String.format(
+                        getString(R.string.tries_left),
+                        hangmanGameviewState.content.leftTriesNumber.toString()
+                    )
                 }
 
                 is HangmanGameViewState.GameWon -> {
-                    Log.d(TAG, " game won ")
                     viewModel.onDialogShown()
-                    GameWonDialogFragment(this).show(childFragmentManager, GameWonDialogFragment.TAG)
+                    GameFinishedDialogFragment(this).show(childFragmentManager, GameFinishedDialogFragment.TAG)
                 }
 
                 is HangmanGameViewState.GameLost -> {
-                    Log.d(TAG, " game Lost ")
                     viewModel.onDialogShown()
-                    GameLostDialogFragment().show(childFragmentManager, GameLostDialogFragment.TAG)
+                    GameFinishedDialogFragment(this).show(childFragmentManager, GameFinishedDialogFragment.TAG)
                 }
-
             }
         }
-
         initListeners()
     }
 

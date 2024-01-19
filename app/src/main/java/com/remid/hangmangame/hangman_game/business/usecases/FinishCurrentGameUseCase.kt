@@ -11,8 +11,6 @@ class FinishCurrentGameUseCase @Inject constructor(private val repository: Hangm
         if(isVictory) {
             repository.updateNbVictories()
         }
-        repository.clearCurrentGuessedLetters()
-        repository.clearTries()
     }
 
     companion object {
