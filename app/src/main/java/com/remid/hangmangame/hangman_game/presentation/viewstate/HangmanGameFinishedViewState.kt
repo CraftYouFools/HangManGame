@@ -1,0 +1,5 @@
+package com.remid.hangmangame.hangman_game.presentation.viewstate
+
+import com.remid.hangmangame.hangman_game.presentation.viewstate.viewstate_content.HangmanGameFinishedContent
+
+data class HangmanGameFinishedViewState(val content: HangmanGameFinishedContent)

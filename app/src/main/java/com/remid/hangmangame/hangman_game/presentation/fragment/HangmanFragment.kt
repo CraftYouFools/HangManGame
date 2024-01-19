@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.remid.hangmangame.R
 import com.remid.hangmangame.databinding.FragmentHangmanGameBinding
-import com.remid.hangmangame.hangman_game.presentation.HangmanGameViewState
+import com.remid.hangmangame.hangman_game.presentation.viewstate.HangmanGameViewState
 import com.remid.hangmangame.hangman_game.presentation.fragment.dialog.GameFinishedDialogFragment
 import com.remid.hangmangame.hangman_game.presentation.viewmodel.HangManGameViewModel
 import com.remid.hangmangame.shared.presentation.fragment.BaseFragment

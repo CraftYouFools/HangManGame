@@ -1,4 +1,6 @@
-package com.remid.hangmangame.hangman_game.presentation
+package com.remid.hangmangame.hangman_game.presentation.viewstate
+
+import com.remid.hangmangame.hangman_game.presentation.viewstate.viewstate_content.HangmanGameContent
 
 sealed class HangmanGameViewState {
 

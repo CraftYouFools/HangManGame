@@ -14,8 +14,8 @@ import com.remid.hangmangame.hangman_game.business.usecases.InitWordListUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.IsGameLostUseCase.Companion.MAX_GUESS_VALUE
 import com.remid.hangmangame.hangman_game.business.usecases.ResetGameHistoryUseCase
 import com.remid.hangmangame.hangman_game.business.usecases.StartNewGameUseCase
-import com.remid.hangmangame.hangman_game.presentation.HangmanGameContent
-import com.remid.hangmangame.hangman_game.presentation.HangmanGameViewState
+import com.remid.hangmangame.hangman_game.presentation.viewstate.viewstate_content.HangmanGameContent
+import com.remid.hangmangame.hangman_game.presentation.viewstate.HangmanGameViewState
 import com.remid.hangmangame.shared.business.HangAppResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job

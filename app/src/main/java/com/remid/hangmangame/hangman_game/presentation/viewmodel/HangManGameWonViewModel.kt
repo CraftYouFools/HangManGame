@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.remid.hangmangame.hangman_game.business.usecases.GetGameStateUseCase
-import com.remid.hangmangame.hangman_game.presentation.HangmanGameFinishedContent
-import com.remid.hangmangame.hangman_game.presentation.HangmanGameFinishedViewState
+import com.remid.hangmangame.hangman_game.presentation.viewstate.viewstate_content.HangmanGameFinishedContent
+import com.remid.hangmangame.hangman_game.presentation.viewstate.HangmanGameFinishedViewState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
