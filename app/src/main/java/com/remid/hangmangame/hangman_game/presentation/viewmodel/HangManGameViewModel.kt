@@ -26,10 +26,10 @@ class HangManGameViewModel(
     private val getCurrentGameUseCase: GetCurrentGameUseCase,
     private val startNewGameUseCase: StartNewGameUseCase,
     private val getHiddenWordUseCase: GetHiddenWordUseCase,
-    private val guessNewLetterUseCase : GuessNewLetterUseCase,
-    private val finishCurrentGameUseCase : FinishCurrentGameUseCase,
+    private val guessNewLetterUseCase: GuessNewLetterUseCase,
+    private val finishCurrentGameUseCase: FinishCurrentGameUseCase,
     private val clearCurrentGameUseCase: ClearCurrentGameUseCase,
-    private val resetGameHistoryUseCase : ResetGameHistoryUseCase,
+    private val resetGameHistoryUseCase: ResetGameHistoryUseCase,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -37,7 +37,8 @@ class HangManGameViewModel(
     val viewState: LiveData<HangmanGameViewState>
         get() = _viewState
 
-    private var currentWordToGuess:String?=null
+    private var currentWordToGuess: String? = null
+
     init {
         getCurrentGame()
         startNewGame()
@@ -58,29 +59,37 @@ class HangManGameViewModel(
                 is HangAppResult.OnFailure -> {
                     _viewState.postValue(HangmanGameViewState.Error)
                 }
+
                 is HangAppResult.OnSuccess -> {
                     result.data.let {
                         it.collect { hangManGameDetails ->
-                            Log.d(TAG, " guessWord : "+hangManGameDetails.guessWord)
+                            Log.d(TAG, " guessWord : " + hangManGameDetails.guessWord)
                             with(hangManGameDetails) {
+                                val showWord = buildString {
+                                    getHiddenWordUseCase.execute(guessWord, letterList)
+                                        .forEach { char ->
+                                            append(char)
+                                            append(" ")
+                                        }
+                                }
                                 val content = HangmanGameContent(
                                     victories,
                                     gameNumber,
-                                    MAX_GUESS_VALUE-triesNumber,
-                                    getHiddenWordUseCase.execute(guessWord, letterList)
+                                    MAX_GUESS_VALUE - triesNumber,
+                                    showWord
                                 )
                                 Log.d(TAG, " content : $content")
 
                                 _viewState.value = if (hangManGameDetails.isGameLost) {
-                                        finishCurrentGameUseCase.execute(false)
-                                        HangmanGameViewState.GameLost(content)
-                                    } else if (isGameWon) {
-                                        finishCurrentGameUseCase.execute(true)
-                                        HangmanGameViewState.GameWon(content)
+                                    finishCurrentGameUseCase.execute(false)
+                                    HangmanGameViewState.GameLost(content)
+                                } else if (isGameWon) {
+                                    finishCurrentGameUseCase.execute(true)
+                                    HangmanGameViewState.GameWon(content)
 
-                                    } else {
-                                        HangmanGameViewState.Content(content)
-                                    }
+                                } else {
+                                    HangmanGameViewState.Content(content)
+                                }
                                 currentWordToGuess = hangManGameDetails.guessWord
                             }
                         }
@@ -90,7 +99,7 @@ class HangManGameViewModel(
         }
     }
 
-    fun onDialogShown(){
+    fun onDialogShown() {
         job?.cancel()
     }
 
@@ -107,10 +116,10 @@ class HangManGameViewModel(
         }
     }
 
-    fun onGuessNewLetter(letter : Char) {
+    fun onGuessNewLetter(letter: Char) {
         viewModelScope.launch(dispatcher) {
             currentWordToGuess?.let {
-                guessNewLetterUseCase.execute(letter,it)
+                guessNewLetterUseCase.execute(letter, it)
             }
         }
     }
